@@ -33,7 +33,7 @@ const MenuItemsLinks = (props: Props) => {
       link: "#",
     },
   ];
-  const navLink = "text-sm text-gray-400 hover:text-blue-600";
+  const navLink = "text-sm text-gray-400 hover:text-black";
 
   const links = () => {
     for (let index: number = 0; index < menuItems.length; index++) {
