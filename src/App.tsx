@@ -1,10 +1,12 @@
-import Navbar from "@/scenes/navbar";
-import Footer from "@/scenes/footer";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import Home from "@/scenes/home";
 
 function App() {
   return (
-    <div className="app bg-gray-20">
+    <div className="app">
       <Navbar />
+      <Home />
       <Footer />
     </div>
   );
