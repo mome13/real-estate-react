@@ -106,7 +106,7 @@ const Navbar = (props: Props) => {
   const flexBetween = "flex items-center justify-between";
   return (
     <nav className={`${flexBetween} fixed top-0 z-30 w-full bg-white py-6`}>
-      <div className={`${flexBetween} mx-auto w-5/6`}>
+      <div className={`${flexBetween} container mx-auto px-5`}>
         <a className="text-3xl font-bold leading-none" href="#">
           <svg className="h-10" viewBox="0 0 10240 10240">
             <path
