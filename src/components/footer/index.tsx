@@ -2,7 +2,7 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <div className="flex min-h-screen w-full items-end bg-white">
+    <div className="flex min-h-screen sm:min-h-0 w-full items-end bg-white">
       <footer className="body-font w-full bg-gray-100 text-gray-700">
         <div className="md:flex-no-wrap container mx-auto flex flex-col flex-wrap px-5 py-24 lg:items-start md:flex-row md:items-center ">
           <div className="mx-auto w-64 flex-shrink-0 text-center md:mx-0 md:text-left">
