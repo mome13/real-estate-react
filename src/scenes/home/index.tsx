@@ -2,6 +2,7 @@ import { container, primaryBtn } from "@/styles/common";
 import BuyHome from "@/assets/home/Buy_a_home.webp";
 import RentHome from "@/assets/home/Rent_a_home.webp";
 import SellHome from "@/assets/home/Sell_a_home.webp";
+import Agent from "@/assets/home/agent.svg";
 
 type Props = {};
 
@@ -20,7 +21,10 @@ const Card = ({
   imgAlt = "",
 }: CardProps) => {
   return (
-    <a className="group flex max-w-sm flex-col items-start rounded-xl border border-gray-200 bg-white shadow cursor-pointer">
+    <a
+      href="#"
+      className="group flex max-w-sm cursor-pointer flex-col items-start rounded-xl border border-gray-200 bg-white shadow"
+    >
       <img className="rounded-t-xl" src={imgSrc} alt={imgAlt} />
 
       <div className="flex grow flex-col items-start p-5">
@@ -57,7 +61,7 @@ export default function Home({}: Props) {
   return (
     <div>
       {/* hero */}
-      <section className="left-0 top-0 h-[30rem] bg-[url('./assets/home-hero-2.jpg')] bg-top bg-no-repeat">
+      <section className="h-[30rem] bg-[url('./assets/home-hero-2.jpg')] bg-top bg-no-repeat">
         <div
           className={`${container} flex h-full flex-col items-center justify-center`}
         >
@@ -90,28 +94,87 @@ export default function Home({}: Props) {
 
       {/* cards */}
       <section className={`bg-gray-100 py-8`}>
-        <div className={`${container} flex justify-between`}>
-          <Card
-            title="Buy a home"
-            description="Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else."
-            button="Browse homes"
-            imgSrc={BuyHome}
-            imgAlt=""
-          />
-          <Card
-            title="Sell a home"
-            description="No matter what path you take to sell your home, we can help you navigate a successful sale."
-            button="See your option"
-            imgSrc={RentHome}
-            imgAlt=""
-          />
-          <Card
-            title="Rent a home"
-            description="We’re creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent."
-            button="Find rentals"
-            imgSrc={SellHome}
-            imgAlt=""
-          />
+        <div className={`${container} items-center`}>
+          <article className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Card
+              title="Buy a home"
+              description="Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else."
+              button="Browse homes"
+              imgSrc={BuyHome}
+              imgAlt=""
+            />
+            <Card
+              title="Sell a home"
+              description="No matter what path you take to sell your home, we can help you navigate a successful sale."
+              button="See your options"
+              imgSrc={RentHome}
+              imgAlt=""
+            />
+            <Card
+              title="Rent a home"
+              description="We’re creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent."
+              button="Find rentals"
+              imgSrc={SellHome}
+              imgAlt=""
+            />
+          </article>
+        </div>
+      </section>
+
+      {/* find agent */}
+      <section className="py-8 sm:pt-16 sm:pb-8">
+        <div
+          className={`${container} flex-col items-center justify-start sm:flex-row`}
+        >
+          <div className="sm:w-1/2 ">
+            <h2 className="mb-4 text-3xl font-bold text-gray-900">
+              Need Help?
+            </h2>
+            <p className="mb-6 text-gray-900">
+              There are more than 10,000 registered agents in our company. Find
+              an agent who offers you homes with competitive prices.
+            </p>
+            <button className={`${primaryBtn}`}>Find Agents</button>
+          </div>
+          <div className="sm:w-1/2 ">
+            <img
+              className="mx-auto w-2/3 sm:ml-auto"
+              src={Agent}
+              alt="real estate agent"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* useful links */}
+      <section className="py-8 sm:pt-8">
+        <div className={`${container} flex-col`}>
+          <h2 className="mb-4 text-3xl font-bold text-gray-900">
+            Useful Links
+          </h2>
+          <article className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <Card
+              title="Buy a home"
+              description="Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else."
+              button="Browse homes"
+              imgSrc={BuyHome}
+              imgAlt=""
+            />
+            <Card
+              title="Sell a home"
+              description="No matter what path you take to sell your home, we can help you navigate a successful sale."
+              button="See your options"
+              imgSrc={RentHome}
+              imgAlt=""
+            />
+            <Card
+              title="Rent a home"
+              description="We’re creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent."
+              button="Find rentals"
+              imgSrc={SellHome}
+              imgAlt=""
+            />
+          </article>
         </div>
       </section>
     </div>
