@@ -11,19 +11,15 @@ const MenuItemsLinks = (props: Props) => {
   };
   const menuItems: Array<menuItem> = [
     {
-      name: "Home",
+      name: "Buy",
       link: "#",
     },
     {
-      name: "About Us",
+      name: "Sell",
       link: "#",
     },
     {
-      name: "Services",
-      link: "#",
-    },
-    {
-      name: "Pricing",
+      name: "Rent",
       link: "#",
     },
     {
