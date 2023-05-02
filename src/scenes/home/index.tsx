@@ -94,8 +94,8 @@ export default function Home({}: Props) {
 
       {/* cards */}
       <section className={`bg-gray-100 py-8`}>
-        <div className={`${container} items-center`}>
-          <article className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className={`${container} items-center justify-between`}>
+          <article className="grid grid-cols-1 gap-4 sm:gap-12 sm:grid-cols-3 justify-between">
             <Card
               title="Buy a home"
               description="Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else."
