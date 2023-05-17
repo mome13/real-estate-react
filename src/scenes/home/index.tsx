@@ -3,6 +3,7 @@ import BuyHome from "@/assets/home/Buy_a_home.webp";
 import RentHome from "@/assets/home/Rent_a_home.webp";
 import SellHome from "@/assets/home/Sell_a_home.webp";
 import Agent from "@/assets/home/agent.svg";
+import SearchBar from "@/components/searchBar";
 
 type Props = {};
 
@@ -68,27 +69,7 @@ export default function Home({}: Props) {
           <h1 className="mb-8 text-center text-5xl font-bold text-white">
             Find it. Tour it. Own it.
           </h1>
-          <div className="flex w-full rounded-full bg-white px-8 py-4 sm:w-1/2">
-            <input
-              className="flex-grow text-ellipsis focus:outline-none"
-              type="text"
-              placeholder="Enter an address, neighborhood, city, or ZIP code"
-            />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="h-6 w-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-              />
-            </svg>
-          </div>
+          <SearchBar />
         </div>
       </section>
 
