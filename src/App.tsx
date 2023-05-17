@@ -3,6 +3,7 @@ import Footer from "@/components/footer";
 import Home from "@/scenes/home";
 import AboutUs from "@/scenes/aboutUs";
 import Search from "@/scenes/search/search";
+import SignUp from "./scenes/signUp";
 import { Routes, Route } from "react-router-dom";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="search" element={<Search />} />
+        <Route path="signup" element={<SignUp />} />
       </Routes>
       <Footer />
     </div>
