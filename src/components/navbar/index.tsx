@@ -101,7 +101,7 @@ const Navbar = (props: Props) => {
   const flexBetween = "flex items-center justify-between";
   return (
     <>
-      <nav className={`${flexBetween} w-full bg-white py-6`}>
+      <div className={`${flexBetween} w-full bg-white py-6`}>
         <div className={`${flexBetween} container mx-auto px-5`}>
           <a className="text-3xl font-bold leading-none" href="#">
             <svg className="h-10" viewBox="0 0 10240 10240">
@@ -112,8 +112,10 @@ const Navbar = (props: Props) => {
             </svg>
           </a>
         </div>
-      </nav>
-      <nav className={`${flexBetween} fixed top-0 z-30 w-full bg-white py-6 border-b border-gray-200`}>
+      </div>
+      <nav
+        className={`${flexBetween} fixed top-0 z-30 w-full border-b border-gray-200 bg-white py-6`}
+      >
         <div className={`${flexBetween} container mx-auto px-5`}>
           <Link className="text-3xl font-bold leading-none" to="/">
             <svg className="h-10" viewBox="0 0 10240 10240">
@@ -136,12 +138,12 @@ const Navbar = (props: Props) => {
             </button>
           </div>
           <MenuItemsLinks />
-          <a className={secondaryBtn} href="#">
+          <Link className={secondaryBtn} to={"signin"}>
             Sign In
-          </a>
-          <a className={primaryBtn} href="#">
+          </Link>
+          <Link className={primaryBtn} to={"signup"}>
             Sign up
-          </a>
+          </Link>
         </div>
       </nav>
     </>
