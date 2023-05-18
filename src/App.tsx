@@ -5,6 +5,7 @@ import AboutUs from "@/scenes/aboutUs";
 import Search from "@/scenes/search/search";
 import SignUp from "./scenes/signUp";
 import { Routes, Route } from "react-router-dom";
+import SignIn from "./scenes/signIn";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
@@ -24,14 +25,13 @@ function App() {
   };
   return (
     <div className="app">
-      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="about" element={<AboutUs />} />
         <Route path="search" element={<Search />} />
         <Route path="signup" element={<SignUp />} />
+        <Route path="signin" element={<SignIn />} />
       </Routes>
-      <Footer />
     </div>
   );
 }
