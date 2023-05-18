@@ -4,6 +4,8 @@ import Dropdown from "@/components/dropdown";
 import { ReactComponentElement, useState } from "react";
 import { primaryBtn } from "@/styles/common";
 import { HouseIcon, BathIcon, BedIcon } from "@/assets/house";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 type Props = {};
 
@@ -289,51 +291,58 @@ const Search = (props: Props) => {
   ];
 
   return (
-    <div className="pt-8">
-      {/* Search & Filters */}
-      <section className={`${container} justify-between`}>
-        <SearchBar classStyle="px-4 py-0 border-[1px] border-gray-200 hover:border-gray-300 h-12" />
-        {/* Filters */}
-        <Dropdown title="Contract Type">
-          <SaleOrRent />
-        </Dropdown>
+    <div>
+      <Navbar />
+      <div className="pt-8">
+        {/* Search & Filters */}
+        <section className={`${container} justify-between`}>
+          <SearchBar classStyle="px-4 py-0 border-[1px] border-gray-200 hover:border-gray-300 h-12" />
+          {/* Filters */}
+          <Dropdown title="Contract Type">
+            <SaleOrRent />
+          </Dropdown>
 
-        <Dropdown title="Price Range">
-          <PriceRangeFilter />
-        </Dropdown>
+          <Dropdown title="Price Range">
+            <PriceRangeFilter />
+          </Dropdown>
 
-        <Dropdown title="Beds & Baths" placement="bottom-left">
-          <BedsBathFilter />
-        </Dropdown>
-      </section>
+          <Dropdown title="Beds & Baths" placement="bottom-left">
+            <BedsBathFilter />
+          </Dropdown>
+        </section>
 
-      <main className={`${container} py-8`}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
-            width: "100%",
-            gap: "2rem",
-          }}
-          className="items-start justify-start gap-8"
-        >
-          {searchResult.map(
-            ({ price, imgUrl, area, address, bedrooms, bathrooms }, index) => {
-              return (
-                <SearchItem
-                  key={`${address}-${index}`}
-                  price={formatter.format(price)}
-                  imgUrl={imgUrl}
-                  area={formatterSqm.format(area)}
-                  address={address}
-                  bedrooms={bedrooms}
-                  bathrooms={bathrooms}
-                />
-              );
-            }
-          )}
-        </div>
-      </main>
+        <main className={`${container} py-8`}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))",
+              width: "100%",
+              gap: "2rem",
+            }}
+            className="items-start justify-start gap-8"
+          >
+            {searchResult.map(
+              (
+                { price, imgUrl, area, address, bedrooms, bathrooms },
+                index
+              ) => {
+                return (
+                  <SearchItem
+                    key={`${address}-${index}`}
+                    price={formatter.format(price)}
+                    imgUrl={imgUrl}
+                    area={formatterSqm.format(area)}
+                    address={address}
+                    bedrooms={bedrooms}
+                    bathrooms={bathrooms}
+                  />
+                );
+              }
+            )}
+          </div>
+        </main>
+      </div>
+      <Footer />
     </div>
   );
 };
