@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
+import { Fragment } from "react";
 import { primaryBtn, secondaryBtn } from "@/styles/common";
 import { Link } from "react-router-dom";
-// import Logo from "@assets/logo.png"
 type Props = {};
 
 const MenuItemsLinks = (props: Props) => {
@@ -13,34 +11,33 @@ const MenuItemsLinks = (props: Props) => {
   const menuItems: Array<menuItem> = [
     {
       name: "Buy",
-      link: "search",
+      link: "/search",
     },
     {
       name: "Sell",
-      link: "search",
+      link: "/search",
     },
     {
       name: "Rent",
-      link: "search",
+      link: "/search",
     },
     {
       name: "Contact us",
-      link: "#",
+      link: "/search",
     },
   ];
   const navLink = "text-sm text-gray-400 hover:text-black";
 
-  const links = () => {
-    for (let index: number = 0; index < menuItems.length; index++) {
-      const menuItem = menuItems[index];
-      <>
-        <li>
+  const links = menuItems.map((menuItem: menuItem, index: number) => {
+    return (
+      <Fragment key={`${menuItem.name}-${menuItem.link}-container`}>
+        <li key={`${menuItem.name}-${menuItem.link}`}>
           <Link className={`${navLink}`} to={menuItem.link}>
             {menuItem.name}
           </Link>
         </li>
         {index !== menuItems.length - 1 && (
-          <li className="text-gray-300">
+          <li key={`menuItem-${index}`} className="text-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -49,50 +46,20 @@ const MenuItemsLinks = (props: Props) => {
               viewBox="0 0 24 24"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
               />
             </svg>
           </li>
         )}
-      </>;
-    }
-  };
-
-  const links2 = menuItems.map((menuItem: menuItem, index: number) => {
-    return (
-      <>
-        <li>
-          <a className={`${navLink}`} href={menuItem.link}>
-            {menuItem.name}
-          </a>
-        </li>
-        {index !== menuItems.length - 1 && (
-          <li className="text-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              stroke="currentColor"
-              className="current-fill h-4 w-4"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 5v0m0 7v0m0 7v0m0-13a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
-              />
-            </svg>
-          </li>
-        )}
-      </>
+      </Fragment>
     );
   });
   return (
     <ul className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform lg:mx-auto lg:flex lg:w-auto lg:items-center lg:space-x-6">
-      {links2}
+      {links}
     </ul>
   );
 };
@@ -138,10 +105,16 @@ const Navbar = (props: Props) => {
             </button>
           </div>
           <MenuItemsLinks />
-          <Link className={secondaryBtn} to={"signin"}>
+          <Link
+            className={`${secondaryBtn} hidden text-sm font-semibold lg:ml-auto lg:mr-3 lg:inline-block`}
+            to={"/signin"}
+          >
             Sign In
           </Link>
-          <Link className={primaryBtn} to={"signup"}>
+          <Link
+            className={`${primaryBtn} hidden font-semibold lg:inline-flex`}
+            to={"/signup"}
+          >
             Sign up
           </Link>
         </div>
