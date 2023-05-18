@@ -4,6 +4,8 @@ import RentHome from "@/assets/home/Rent_a_home.webp";
 import SellHome from "@/assets/home/Sell_a_home.webp";
 import Agent from "@/assets/home/agent.svg";
 import SearchBar from "@/components/searchBar";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 type Props = {};
 
@@ -61,6 +63,7 @@ const Card = ({
 export default function Home({}: Props) {
   return (
     <div>
+      <Navbar />
       {/* hero */}
       <section className="h-[30rem] bg-[url('./assets/home-hero-2.jpg')] bg-top bg-no-repeat">
         <div
@@ -158,6 +161,7 @@ export default function Home({}: Props) {
           </article>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
