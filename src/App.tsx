@@ -6,6 +6,7 @@ import Search from "@/scenes/search/search";
 import SignUp from "./scenes/signUp";
 import { Routes, Route } from "react-router-dom";
 import SignIn from "./scenes/signIn";
+import Property from "./scenes/property";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
@@ -13,7 +14,10 @@ type HTMLElementEvent<T extends HTMLElement> = Event & {
 function App() {
   // Close the dropdown if the user clicks outside of it
   window.onclick = function (event: any) {
-    if (!event.target?.matches(".dropbtn") && !event.target?.closest(".dropdown-content")) {
+    if (
+      !event.target?.matches(".dropbtn") &&
+      !event.target?.closest(".dropdown-content")
+    ) {
       const dropdowns = document.getElementsByClassName("dropdown-content");
       for (let i = 0; i < dropdowns.length; i++) {
         let openDropdown = dropdowns[i];
@@ -31,6 +35,7 @@ function App() {
         <Route path="search" element={<Search />} />
         <Route path="signup" element={<SignUp />} />
         <Route path="signin" element={<SignIn />} />
+        <Route path="property" element={<Property />} />
       </Routes>
     </div>
   );
