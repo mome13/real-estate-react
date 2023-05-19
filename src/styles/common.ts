@@ -5,3 +5,5 @@ export const secondaryBtn =
   "rounded-xl bg-gray-100 px-6 py-2  text-gray-900 transition duration-200 hover:bg-gray-200";
 export const borderedInput =
   "outline-none py-2 px-4 border-[1px] border-gray-200 hover:border-gray-300 rounded-xl";
+
+export const separator = "my-4 h-[1px] bg-slate-200";
