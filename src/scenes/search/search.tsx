@@ -1,11 +1,13 @@
 import SearchBar from "@/components/searchBar";
-import { container } from "@/styles/common";
+import { container, separator } from "@/styles/common";
 import Dropdown from "@/components/dropdown";
 import { ReactComponentElement, useState } from "react";
 import { primaryBtn } from "@/styles/common";
 import { HouseIcon, BathIcon, BedIcon } from "@/assets/house";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { useNavigate } from "react-router-dom";
+import { IProperty } from "../property";
 
 type Props = {};
 
@@ -176,44 +178,10 @@ const SearchItem = ({
   address,
   bedrooms,
   bathrooms,
-}: {
-  price: string;
-  imgUrl: string;
-  address: string;
-  bedrooms: number;
-  bathrooms: number;
-  area: string;
-}) => {
-  return (
-    <article className=" flex min-h-[20rem] cursor-pointer flex-col items-stretch rounded-xl border-[1px] border-gray-200 bg-inherit p-4 transition-all hover:border-gray-400">
-      <div className=" grow">
-        <div className="">
-          <img className=" rounded-xl" src={imgUrl} alt="" />
-        </div>
-        <h3 className="my-2 font-bold text-black">{address}</h3>
-        <span className="font-semibold text-blue-500">{price}</span>
-        <span className="text-sm font-medium">/mo</span>
-      </div>
-      <div className=" my-4 h-[1px] bg-slate-200"></div>
-      <div className="flex justify-between">
-        <span className="flex items-baseline gap-2 text-gray-500">
-          <BedIcon />
-          <span className="text-gray-500">{bedrooms} bedroom</span>
-        </span>
-        <span className="flex items-center gap-2">
-          <BathIcon />
-          <span className="text-gray-500">{bathrooms} bathroom</span>
-        </span>
-        <span className="flex items-center gap-2">
-          <HouseIcon />
-          <span className="text-gray-500">{area} sqm</span>
-        </span>
-      </div>
-    </article>
-  );
-};
+  parkings,
+}: IProperty) => {
+  const navigate = useNavigate();
 
-const Search = (props: Props) => {
   const formatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -233,7 +201,44 @@ const Search = (props: Props) => {
     //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
   });
 
-  const searchResult = [
+  return (
+    <article
+      onClick={() => {
+        navigate("/property");
+      }}
+      className=" flex min-h-[20rem] cursor-pointer flex-col items-stretch rounded-xl border-[1px] border-gray-200 bg-inherit p-4 transition-all hover:border-gray-400"
+    >
+      <div className=" grow">
+        <div className="">
+          <img className=" rounded-xl" src={imgUrl} alt="" />
+        </div>
+        <h3 className="my-2 font-bold text-black">{address}</h3>
+        <span className="font-semibold text-blue-500">
+          {formatter.format(price)}
+        </span>
+        <span className="text-sm font-medium">/mo</span>
+      </div>
+      <div className={`${separator}`}></div>
+      <div className="flex justify-between">
+        <span className="flex items-baseline gap-2 text-gray-500">
+          <BedIcon />
+          <span className="text-gray-500">{bedrooms} bedroom</span>
+        </span>
+        <span className="flex items-center gap-2">
+          <BathIcon />
+          <span className="text-gray-500">{bathrooms} bathroom</span>
+        </span>
+        <span className="flex items-center gap-2">
+          <HouseIcon />
+          <span className="text-gray-500">{formatterSqm.format(area)} sqm</span>
+        </span>
+      </div>
+    </article>
+  );
+};
+
+const Search = (props: Props) => {
+  const searchResult: Array<IProperty> = [
     {
       price: 2500,
       imgUrl:
@@ -242,6 +247,8 @@ const Search = (props: Props) => {
       address: "St Colin Primo 287",
       bedrooms: 3,
       bathrooms: 4,
+      rent: 250,
+      parkings: 2,
     },
     {
       price: 3100,
@@ -251,6 +258,8 @@ const Search = (props: Props) => {
       address: "Miracle the Louwis 316",
       bedrooms: 5,
       bathrooms: 6,
+      rent: 310,
+      parkings: 3,
     },
     {
       price: 4000,
@@ -260,6 +269,8 @@ const Search = (props: Props) => {
       address: "Jacob SD ART 231",
       bedrooms: 6,
       bathrooms: 9,
+      rent: 400,
+      parkings: 4,
     },
     {
       price: 1200,
@@ -269,6 +280,8 @@ const Search = (props: Props) => {
       address: "Marquest M2 257",
       bedrooms: 2,
       bathrooms: 2,
+      rent: 120,
+      parkings: 2,
     },
     {
       price: 5500,
@@ -278,6 +291,8 @@ const Search = (props: Props) => {
       address: "Robin Jql 112",
       bedrooms: 5,
       bathrooms: 6,
+      rent: 550,
+      parkings: 5,
     },
     {
       price: 3100,
@@ -287,6 +302,8 @@ const Search = (props: Props) => {
       address: "KMS louise 11",
       bedrooms: 5,
       bathrooms: 12,
+      rent: 310,
+      parkings: 2,
     },
   ];
 
@@ -323,18 +340,29 @@ const Search = (props: Props) => {
           >
             {searchResult.map(
               (
-                { price, imgUrl, area, address, bedrooms, bathrooms },
+                {
+                  price,
+                  rent,
+                  imgUrl,
+                  area,
+                  address,
+                  bedrooms,
+                  bathrooms,
+                  parkings,
+                },
                 index
               ) => {
                 return (
                   <SearchItem
                     key={`${address}-${index}`}
-                    price={formatter.format(price)}
+                    price={price}
+                    rent={rent}
                     imgUrl={imgUrl}
-                    area={formatterSqm.format(area)}
+                    area={area}
                     address={address}
                     bedrooms={bedrooms}
                     bathrooms={bathrooms}
+                    parkings={parkings}
                   />
                 );
               }
