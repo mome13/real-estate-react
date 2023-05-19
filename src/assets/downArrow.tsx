@@ -1,8 +1,6 @@
-type Props = {
-  width?: number;
-};
+import IconInterface from "./commonIcons";
 
-const DownArrow = ({ width = 16 }: Props) => {
+const DownArrow = ({ width = 16 }: IconInterface) => {
   return (
     <svg
       viewBox="0 0 32 32"
