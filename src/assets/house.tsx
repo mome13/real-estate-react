@@ -1,8 +1,6 @@
-type Props = {
-  width?: number;
-};
+import IconInterface from "./commonIcons";
 
-const HouseIcon = ({ width = 16 }: Props) => {
+const HouseIcon = ({ width = 16 }: IconInterface) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +22,7 @@ const HouseIcon = ({ width = 16 }: Props) => {
   );
 };
 
-const BathIcon = ({ width = 16 }: Props) => {
+const BathIcon = ({ width = 16 }: IconInterface) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +38,7 @@ const BathIcon = ({ width = 16 }: Props) => {
   );
 };
 
-const BedIcon = ({ width = 16 }: Props) => {
+const BedIcon = ({ width = 16 }: IconInterface) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

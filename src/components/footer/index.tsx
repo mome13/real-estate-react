@@ -2,8 +2,8 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <div className="flex min-h-screen sm:min-h-0 w-full items-end bg-white">
-      <footer className="body-font w-full bg-gray-100 text-gray-700">
+    <div className="flex min-h-screen w-full items-end sm:min-h-0">
+      <footer className="body-font w-full bg-gray-200 text-gray-700">
         <div className="md:flex-no-wrap container mx-auto flex flex-col flex-wrap px-5 py-24 lg:items-start md:flex-row md:items-center ">
           <div className="mx-auto w-64 flex-shrink-0 text-center md:mx-0 md:text-left">
             <a className="title-font flex items-center justify-center font-medium text-gray-900 md:justify-start">
@@ -20,9 +20,9 @@ const Footer = (props: Props) => {
                 <a className="cursor-pointer text-gray-500 hover:text-gray-700">
                   <svg
                     fill="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     className="h-5 w-5"
                     viewBox="0 0 24 24"
                   >
@@ -32,9 +32,9 @@ const Footer = (props: Props) => {
                 <a className="ml-3 cursor-pointer text-gray-500 hover:text-gray-700">
                   <svg
                     fill="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     className="h-5 w-5"
                     viewBox="0 0 24 24"
                   >
@@ -45,9 +45,9 @@ const Footer = (props: Props) => {
                   <svg
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     className="h-5 w-5"
                     viewBox="0 0 24 24"
                   >
@@ -66,9 +66,9 @@ const Footer = (props: Props) => {
                   <svg
                     fill="currentColor"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="0"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="0"
                     className="h-5 w-5"
                     viewBox="0 0 24 24"
                   >
