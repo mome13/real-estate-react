@@ -1,0 +1,9 @@
+{
+  "BASE_URL": "http://localhost:5000/",
+  "timeout": 15000,
+  "NAME": "IDmelon",
+  "CURRENCY": "USD",
+  "LOGIN_CONSTANTS": {
+    "loginURL": "http://localhost:5000/auth/signin"
+  }
+}
