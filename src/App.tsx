@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 import SignIn from "./scenes/signIn";
 import Property from "./scenes/property";
 import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 type HTMLElementEvent<T extends HTMLElement> = Event & {
@@ -38,6 +39,7 @@ function App() {
           <Route path="signin" element={<SignIn />} />
           <Route path="property" element={<Property />} />
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right"/>
       </QueryClientProvider>
     </div>
   );
