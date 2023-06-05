@@ -7,10 +7,46 @@ import {
   primaryBtn,
   secondaryBtn,
 } from "@/styles/common";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSignIn } from "@/hooks/useSignIn";
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
+import { joiResolver } from "@hookform/resolvers/joi";
+import Joi from "joi";
+
 type Props = {};
+interface RegisterFormData {
+  email: string;
+  password: string;
+}
+
+const schema = Joi.object({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required(),
+  password: Joi.string().min(6).required(),
+});
 
 const SignIn = (props: Props) => {
+  const navigate = useNavigate();
+  const { isLoading, mutate } = useSignIn<RegisterFormData>((data) => {
+    console.log("signin data:", data?.data);
+    navigate(-1);
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    mode: "onChange",
+    resolver: joiResolver(schema),
+  });
+
+  if (isLoading) {
+    return <h2>Loading</h2>;
+  }
+
   return (
     <div>
       <Navbar />
@@ -32,20 +68,50 @@ const SignIn = (props: Props) => {
                   {"Hey, Enter your details to sign into your account"}
                 </p>
 
-                <form className="mb-4 flex flex-col gap-4" action="" id="sign-up-form">
+                <form
+                  onSubmit={handleSubmit((register: RegisterFormData) =>
+                    mutate(register)
+                  )}
+                  className="mb-4 flex flex-col gap-4"
+                  action=""
+                  id="sign-up-form"
+                >
                   <input
                     className={`${borderedInput} font-light text-black hover:border-gray-400`}
                     type="text"
-                    name=""
+                    {...register("email", {
+                      required: "Email is required.",
+                    })}
                     id="su-email"
                     placeholder="example@email.com"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="email"
+                    render={({ message }) => (
+                      <p className="-mt-2 ml-1 text-xs font-normal text-red-500">
+                        {message}
+                      </p>
+                    )}
                   />
                   <input
                     className={`${borderedInput} font-light text-black hover:border-gray-400`}
                     type="password"
-                    name=""
+                    {...register("password", {
+                      minLength: 6,
+                      required: true,
+                    })}
                     id="su-password"
                     placeholder="Password"
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="password"
+                    render={({ message }) => (
+                      <p className="-mt-2 ml-1 text-xs font-normal text-red-500">
+                        {message}
+                      </p>
+                    )}
                   />
 
                   <input
