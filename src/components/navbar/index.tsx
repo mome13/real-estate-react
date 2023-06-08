@@ -1,6 +1,9 @@
 import { Fragment } from "react";
 import { primaryBtn, secondaryBtn } from "@/styles/common";
 import { Link } from "react-router-dom";
+import UserInfoContext from "@/contexts/userInfo.context";
+import { useContext } from "react";
+import { useSignOut } from "@/hooks/useSignOut";
 type Props = {};
 
 const MenuItemsLinks = (props: Props) => {
@@ -65,10 +68,16 @@ const MenuItemsLinks = (props: Props) => {
 };
 
 const Navbar = (props: Props) => {
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
+
+  const { isLoading, mutate } = useSignOut((data) => {
+    setUserInfo(null);
+  });
+
   const flexBetween = "flex items-center justify-between";
   return (
     <>
-      <div className={`${flexBetween} w-full bg-white py-6`}>
+      <div className={`${flexBetween} w-full bg-white py-6 opacity-0`}>
         <div className={`${flexBetween} container mx-auto px-5`}>
           <a className="text-3xl font-bold leading-none" href="#">
             <svg className="h-10" viewBox="0 0 10240 10240">
@@ -105,18 +114,29 @@ const Navbar = (props: Props) => {
             </button>
           </div>
           <MenuItemsLinks />
-          <Link
-            className={`${secondaryBtn} hidden text-sm font-semibold lg:ml-auto lg:mr-3 lg:inline-block`}
-            to={"/signin"}
-          >
-            Sign In
-          </Link>
-          <Link
-            className={`${primaryBtn} hidden font-semibold lg:inline-flex`}
-            to={"/signup"}
-          >
-            Sign up
-          </Link>
+          {userInfo && userInfo?.email ? (
+            <button
+              className={`${primaryBtn} hidden font-semibold lg:inline-flex`}
+              onClick={() => mutate()}
+            >
+              Sign out
+            </button>
+          ) : (
+            <Fragment>
+              <Link
+                className={`${secondaryBtn} hidden text-sm font-semibold lg:ml-auto lg:mr-3 lg:inline-block`}
+                to={"/signin"}
+              >
+                Sign In
+              </Link>
+              <Link
+                className={`${primaryBtn} hidden font-semibold lg:inline-flex`}
+                to={"/signup"}
+              >
+                Sign up
+              </Link>
+            </Fragment>
+          )}
         </div>
       </nav>
     </>
