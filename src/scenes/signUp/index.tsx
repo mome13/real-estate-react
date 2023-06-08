@@ -12,6 +12,9 @@ import { useSignUp } from "@/hooks/useSignUp";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { joiResolver } from "@hookform/resolvers/joi";
+import UserInfoContext from "@/contexts/userInfo.context";
+import { useContext } from "react";
+
 import Joi from "joi";
 type Props = {};
 interface SignUpFormData {
@@ -38,8 +41,9 @@ const schema = Joi.object({
 
 const SignUp = (props: Props) => {
   const navigate = useNavigate();
+  const { setUserInfo } = useContext(UserInfoContext);
   const { isLoading, mutate } = useSignUp<SignUpFormData>((data) => {
-    console.log("signUp data:", data?.data);
+    setUserInfo(data);
     navigate(-1);
   });
 
