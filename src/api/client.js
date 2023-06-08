@@ -1,5 +1,4 @@
 import axios from "axios";
-import tokenService from "@/utils/tokenService";
 import config from "@/config.json";
 
 const requestConfig = {
@@ -10,43 +9,23 @@ const requestConfig = {
   //   },
   //   timeout: config.timeout,
 };
-const TokenService = tokenService.getService();
 let instance = axios.create(requestConfig);
 
 instance.defaults.headers = {
   "Content-Type": "application/json",
-  Accept: "text/plain",
+  Accept: "*/*",
 };
 instance.defaults.timeout = config.timeout;
-// instance.defaults.baseURL = 'https://jsonplaceholder.typicode.com'
-instance.defaults.baseURL = config.BASE_URL;
+instance.defaults.withCredentials = true;
 
 instance.interceptors.request.use(function (config) {
-  const accessToken = TokenService.getAccessToken();
-  if (accessToken) {
-    config.headers["Authorization"] = accessToken;
-  }
-
   config.params = Object.assign({}, config.params || {});
   return config;
 });
 
-const getDispatch = (url, options) => instance.get(url, options);
-const postDispatch = (url, payload) => instance.post(url, payload);
-// const putDispatch = (url, payload) => instance.put(url, payload);
-// const deleteDispatch = (url, payload) =>
-//   instance.delete(url, { data: payload });
-
 const self = function dispatch(urlInfo) {
-  //   let body;
-  //   if (urlInfo.method === "get") body = getDispatch;
-  //   if (urlInfo.method === "post") body = postDispatch;
-  //   if (urlInfo.method === "put") body = putDispatch;
-  //   if (urlInfo.method === "delete") body = deleteDispatch;
-
   return new Promise(function (resolve, reject) {
     instance(urlInfo)
-      // body(urlInfo, payload)
       .then(({ data }) => {
         return resolve(data);
       })
