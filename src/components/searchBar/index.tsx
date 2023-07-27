@@ -1,14 +1,24 @@
-import React from "react";
+import { useState } from "react";
 
 type Props = {
   classStyle?: string;
   placeholder?: string;
+  searchValue?: string;
+  setSearchValue?: (searchValue: string) => void;
+  applySearch?: () => void;
 };
 
-const searchBar = ({ classStyle = "px-8 py-4", placeholder }: Props) => {
+const searchBar = ({
+  searchValue,
+  setSearchValue,
+  applySearch,
+  classStyle = "px-8 py-4",
+  placeholder,
+}: Props) => {
+  const [localSearchValue, setLocalSearchValue] = useState(searchValue);
   return (
     <div
-      className={`flex items-center w-full rounded-full bg-white sm:w-1/2 ${classStyle}`}
+      className={`flex w-full items-center rounded-full bg-white sm:w-1/2 ${classStyle}`}
     >
       <input
         className="flex-grow text-ellipsis bg-transparent focus:outline-none"
@@ -16,6 +26,10 @@ const searchBar = ({ classStyle = "px-8 py-4", placeholder }: Props) => {
         placeholder={
           placeholder || "Enter an address, neighborhood, city, or ZIP code"
         }
+        onChange={(event) =>
+          setSearchValue && setSearchValue(event.target.value)
+        }
+        value={searchValue}
       />
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +37,10 @@ const searchBar = ({ classStyle = "px-8 py-4", placeholder }: Props) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-6 w-6 cursor-pointer hover:text-blue-500"
+        className={`h-6 w-6 cursor-pointer hover:text-blue-500`}
+        onClick={() => {
+          applySearch && applySearch();
+        }}
       >
         <path
           strokeLinecap="round"
