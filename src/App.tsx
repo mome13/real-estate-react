@@ -63,7 +63,7 @@ function App() {
             <Route path="search" element={<Search />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="signin" element={<SignIn />} />
-            <Route path="property" element={<Property />} />
+            <Route path="property/:propertyId" element={<Property />} />
           </Routes>
         </UserInfoContext.Provider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
