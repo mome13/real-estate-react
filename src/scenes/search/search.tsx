@@ -1,13 +1,14 @@
 import SearchBar from "@/components/searchBar";
 import { container, separator } from "@/styles/common";
 import Dropdown from "@/components/dropdown";
-import { ReactComponentElement, useState } from "react";
+import { useEffect, useState } from "react";
 import { primaryBtn } from "@/styles/common";
 import { HouseIcon, BathIcon, BedIcon } from "@/assets/house";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { IProperty } from "../property";
+import { useSearchQuery } from "@/hooks/useSearchQuery";
 
 type Props = {};
 
@@ -35,28 +36,67 @@ const FilterContent = ({
     </div>
   );
 };
-const PriceRangeFilter = (props: {}) => {
+const PriceRangeFilter = ({
+  searchParams,
+  setSearchParams,
+}: {
+  searchParams: URLSearchParams;
+  setSearchParams: (data: any) => void;
+}) => {
+  const [minRent, setMinRent] = useState(
+    searchParams.get("minRent") as string | ""
+  );
+  const [maxRent, setMaxRent] = useState(
+    searchParams.get("maxRent") as string | ""
+  );
+
+  //     minRent,
+  //     maxRent,
+  //     minPrice,
+  //     maxPrice,
+  const applyPriceRange = () => {
+    if (minRent) {
+      searchParams.set("minRent", minRent);
+    } else {
+      searchParams.delete("minRent");
+    }
+
+    if (maxRent) {
+      searchParams.set("maxRent", maxRent);
+    } else {
+      searchParams.delete("maxRent");
+    }
+    setSearchParams(searchParams);
+  };
+
   return (
-    <FilterContent title="Price">
+    <FilterContent title="Rent">
       <div className="flex flex-col px-4 pb-2">
-        <label htmlFor="min-price">Min Price($):</label>
+        <label htmlFor="min-price">Min Rent($):</label>
         <input
           type="text"
           placeholder="200"
           id="min-price"
           className="mb-4 rounded-md border-[1px] border-gray-200 px-2 py-1 focus:outline-none"
+          onChange={(event) => setMinRent(event.target.value)}
+          defaultValue={minRent}
         />
 
-        <label htmlFor="max-price">Max Price($):</label>
+        <label htmlFor="max-price">Max Rent($):</label>
         <input
           type="text"
           placeholder="500"
           id="max-price"
           className="mb-4 rounded-md border-[1px] border-gray-200 px-2 py-1 focus:outline-none"
+          onChange={(event) => setMaxRent(event.target.value)}
+          defaultValue={maxRent}
         />
 
         <div className="mb-4 w-full">
-          <button className={`${primaryBtn} w-full justify-center py-3`}>
+          <button
+            onClick={applyPriceRange}
+            className={`${primaryBtn} w-full justify-center py-3`}
+          >
             Apply
           </button>
         </div>
@@ -67,13 +107,13 @@ const PriceRangeFilter = (props: {}) => {
 
 const HorizontalSelect = ({
   selectButtons,
-  defaultSelect,
+  selected,
+  setSelected,
 }: {
   selectButtons: Array<{ text: string }>;
-  defaultSelect?: number;
+  selected: any;
+  setSelected: (index: number) => void;
 }) => {
-  const [selected, setSelected] = useState(defaultSelect ?? -1);
-
   return (
     <div className="w-min-56 flex w-max rounded-md border-[1px] border-gray-200 bg-white">
       {selectButtons.map((buttonDetail, index) => {
@@ -93,7 +133,13 @@ const HorizontalSelect = ({
   );
 };
 
-const SaleOrRent = (props: {}) => {
+const SaleOrRent = ({
+  searchParams,
+  setSearchParams,
+}: {
+  searchParams: URLSearchParams;
+  setSearchParams: (data: any) => void;
+}) => {
   const selectButtons: Array<{ text: string }> = [
     {
       text: "Any",
@@ -105,13 +151,38 @@ const SaleOrRent = (props: {}) => {
       text: "Rent",
     },
   ];
+  const typeSearchParams = searchParams.get("type");
+  const defaultValue = selectButtons.findIndex(({ text }) => {
+    return text.toLowerCase() === (typeSearchParams ?? "").toLowerCase();
+  });
+
+  const [selected, setSelected] = useState(
+    defaultValue >= 0 ? defaultValue : 0
+  );
   return (
     <div>
       <FilterContent title="Contract Type" style="pb-4" bodyStyle="px-4 mt-1">
-        <HorizontalSelect selectButtons={selectButtons} defaultSelect={0} />
+        <HorizontalSelect
+          selectButtons={selectButtons}
+          selected={selected}
+          setSelected={setSelected}
+        />
       </FilterContent>
       <div className="mb-4 w-full px-4">
-        <button className={`${primaryBtn} w-full justify-center py-3`}>
+        <button
+          onClick={() => {
+            if (selected > 0) {
+              searchParams.set(
+                "type",
+                selectButtons[selected].text.toLowerCase()
+              );
+            } else {
+              searchParams.delete("type");
+            }
+            setSearchParams(searchParams);
+          }}
+          className={`${primaryBtn} w-full justify-center py-3`}
+        >
           Apply
         </button>
       </div>
@@ -119,7 +190,33 @@ const SaleOrRent = (props: {}) => {
   );
 };
 
-const BedsBathFilter = (props: {}) => {
+const BedsBathFilter = ({
+  searchParams,
+  setSearchParams,
+}: {
+  searchParams: URLSearchParams;
+  setSearchParams: (data: any) => void;
+}) => {
+  const [bedSelected, setBedSelected] = useState(
+    (() => {
+      const defaultBedrooms = searchParams.get("bedrooms");
+      if (defaultBedrooms && +defaultBedrooms > 0 && +defaultBedrooms < 6) {
+        return +defaultBedrooms;
+      } else {
+        return 0;
+      }
+    })()
+  );
+  const [bathSelected, setBathSelected] = useState(
+    (() => {
+      const defaultBathrooms = searchParams.get("bathrooms");
+      if (defaultBathrooms && +defaultBathrooms > 0 && +defaultBathrooms < 6) {
+        return +defaultBathrooms;
+      } else {
+        return 0;
+      }
+    })()
+  );
   const selectButtons: Array<{ text: string }> = [
     {
       text: "Any",
@@ -141,6 +238,28 @@ const BedsBathFilter = (props: {}) => {
     },
   ];
 
+  const applyBedsAndBath = () => {
+    if (bedSelected > 0) {
+      searchParams.set(
+        "bedrooms",
+        selectButtons[bedSelected].text.substring(1)
+      );
+    } else {
+      searchParams.delete("bedrooms");
+    }
+
+    if (bathSelected > 0) {
+      searchParams.set(
+        "bathrooms",
+        selectButtons[bathSelected].text.substring(1)
+      );
+    } else {
+      searchParams.delete("bathrooms");
+    }
+
+    setSearchParams(searchParams);
+  };
+
   return (
     <div>
       <FilterContent
@@ -149,7 +268,11 @@ const BedsBathFilter = (props: {}) => {
         bodyStyle="px-4 mt-1"
       >
         <h4 className="mb-1 text-black">Bedrooms</h4>
-        <HorizontalSelect selectButtons={selectButtons} defaultSelect={0} />
+        <HorizontalSelect
+          selectButtons={selectButtons}
+          selected={bedSelected}
+          setSelected={setBedSelected}
+        />
       </FilterContent>
 
       <FilterContent
@@ -159,11 +282,18 @@ const BedsBathFilter = (props: {}) => {
         bodyStyle="px-4 mt-1"
       >
         <h4 className="text-black">Baths</h4>
-        <HorizontalSelect selectButtons={selectButtons} defaultSelect={0} />
+        <HorizontalSelect
+          selectButtons={selectButtons}
+          selected={bathSelected}
+          setSelected={setBathSelected}
+        />
       </FilterContent>
 
       <div className="mb-4 w-full px-4">
-        <button className={`${primaryBtn} w-full justify-center py-3`}>
+        <button
+          onClick={applyBedsAndBath}
+          className={`${primaryBtn} w-full justify-center py-3`}
+        >
           Apply
         </button>
       </div>
@@ -171,15 +301,9 @@ const BedsBathFilter = (props: {}) => {
   );
 };
 
-const SearchItem = ({
-  price,
-  imgUrl,
-  area,
-  address,
-  bedrooms,
-  bathrooms,
-  parkings,
-}: IProperty) => {
+const SearchItem = (property: IProperty) => {
+  const { price, imgUrl, area, address, bedrooms, bathrooms, parkings, _id } =
+    property;
   const navigate = useNavigate();
 
   const formatter = new Intl.NumberFormat("en-US", {
@@ -204,13 +328,15 @@ const SearchItem = ({
   return (
     <article
       onClick={() => {
-        navigate("/property");
+        navigate(`/property/${_id}`, {
+          state: property,
+        });
       }}
-      className=" flex min-h-[20rem] cursor-pointer flex-col items-stretch rounded-xl border-[1px] border-gray-200 bg-inherit p-4 transition-all hover:border-gray-400"
+      className=" flex min-h-[20rem] max-w-[30rem] cursor-pointer flex-col items-stretch rounded-xl border-[1px] border-gray-200 bg-inherit p-4 transition-all hover:border-gray-400"
     >
       <div className=" grow">
         <div className="">
-          <img className=" rounded-xl" src={imgUrl} alt="" />
+          <img className=" w-full rounded-xl" src={imgUrl} alt="" />
         </div>
         <h3 className="my-2 font-bold text-black">{address}</h3>
         <span className="font-semibold text-blue-500">
@@ -238,6 +364,22 @@ const SearchItem = ({
 };
 
 const Search = (props: Props) => {
+  let [searchParams, setSearchParams] = useSearchParams();
+  const { isLoading, data } = useSearchQuery(searchParams.toString());
+  const [address, setAddress] = useState(
+    searchParams.get("address") as string | ""
+  );
+
+  const applySearchAddress = () => {
+    if (address) {
+      searchParams.set("address", address);
+    } else {
+      searchParams.delete("address");
+    }
+
+    setSearchParams(searchParams);
+  };
+
   const searchResult: Array<IProperty> = [
     {
       price: 2500,
@@ -312,19 +454,35 @@ const Search = (props: Props) => {
       <Navbar />
       <div className="pt-8">
         {/* Search & Filters */}
-        <section className={`${container} justify-between`}>
-          <SearchBar classStyle="px-4 py-0 border-[1px] border-gray-200 hover:border-gray-300 h-12" />
+        <section
+          className={`${container} flex-col flex-wrap gap-y-4 sm:justify-between md:flex-row `}
+        >
+          <SearchBar
+            searchValue={address ?? ""}
+            setSearchValue={setAddress}
+            applySearch={applySearchAddress}
+            classStyle="px-4 py-0 border-[1px] border-gray-200 hover:border-gray-300 h-12"
+          />
           {/* Filters */}
           <Dropdown title="Contract Type">
-            <SaleOrRent />
+            <SaleOrRent
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
           </Dropdown>
 
           <Dropdown title="Price Range">
-            <PriceRangeFilter />
+            <PriceRangeFilter
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
           </Dropdown>
 
           <Dropdown title="Beds & Baths" placement="bottom-left">
-            <BedsBathFilter />
+            <BedsBathFilter
+              searchParams={searchParams}
+              setSearchParams={setSearchParams}
+            />
           </Dropdown>
         </section>
 
@@ -336,36 +494,45 @@ const Search = (props: Props) => {
               width: "100%",
               gap: "2rem",
             }}
-            className="items-start justify-start gap-8"
+            className="items-stretch justify-start gap-8"
           >
-            {searchResult.map(
-              (
-                {
-                  price,
-                  rent,
-                  imgUrl,
-                  area,
-                  address,
-                  bedrooms,
-                  bathrooms,
-                  parkings,
-                },
-                index
-              ) => {
-                return (
-                  <SearchItem
-                    key={`${address}-${index}`}
-                    price={price}
-                    rent={rent}
-                    imgUrl={imgUrl}
-                    area={area}
-                    address={address}
-                    bedrooms={bedrooms}
-                    bathrooms={bathrooms}
-                    parkings={parkings}
-                  />
-                );
-              }
+            {isLoading ? (
+              <div className=" min-h-[100px] w-full">
+                <p>loading...</p>
+              </div>
+            ) : (
+              data &&
+              data.map(
+                (
+                  {
+                    _id,
+                    price,
+                    rent,
+                    imgUrl,
+                    area,
+                    address,
+                    bedrooms,
+                    bathrooms,
+                    parkings,
+                  },
+                  index
+                ) => {
+                  return (
+                    <SearchItem
+                      _id={_id}
+                      key={`${address}-${index}`}
+                      price={price}
+                      rent={rent}
+                      imgUrl={imgUrl}
+                      area={area}
+                      address={address}
+                      bedrooms={bedrooms}
+                      bathrooms={bathrooms}
+                      parkings={parkings}
+                    />
+                  );
+                }
+              )
             )}
           </div>
         </main>

@@ -6,6 +6,8 @@ import Agent from "@/assets/home/agent.svg";
 import SearchBar from "@/components/searchBar";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { useState } from "react";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -15,6 +17,7 @@ type CardProps = {
   button: string;
   imgSrc: any;
   imgAlt: string;
+  link: string;
 };
 const Card = ({
   title,
@@ -22,10 +25,11 @@ const Card = ({
   button,
   imgSrc,
   imgAlt = "",
+  link,
 }: CardProps) => {
   return (
     <a
-      href="#"
+      href={link}
       className="group flex max-w-sm cursor-pointer flex-col items-start rounded-xl border border-gray-200 bg-white shadow"
     >
       <img className="rounded-t-xl" src={imgSrc} alt={imgAlt} />
@@ -37,7 +41,7 @@ const Card = ({
 
         <p className="mb-6 font-normal text-gray-700">{description}</p>
         <a
-          href="#"
+          href={link}
           className={`${primaryBtn} mt-auto inline-flex items-center px-3 text-center group-hover:bg-blue-600`}
         >
           {button}
@@ -61,6 +65,16 @@ const Card = ({
 };
 
 export default function Home({}: Props) {
+  const navigate = useNavigate();
+  const [address, setAddress] = useState("");
+  const applySearch = () => {
+    navigate({
+      pathname: "search",
+      search: createSearchParams({
+        address,
+      }).toString(),
+    });
+  };
   return (
     <div>
       <Navbar />
@@ -72,14 +86,18 @@ export default function Home({}: Props) {
           <h1 className="mb-8 text-center text-5xl font-bold text-white">
             Find it. Tour it. Own it.
           </h1>
-          <SearchBar />
+          <SearchBar
+            searchValue={address}
+            setSearchValue={setAddress}
+            applySearch={applySearch}
+          />
         </div>
       </section>
 
       {/* cards */}
       <section className={`bg-gray-100 py-8`}>
         <div className={`${container} items-center justify-between`}>
-          <article className="grid grid-cols-1 gap-4 sm:gap-12 sm:grid-cols-3 justify-between">
+          <article className="grid grid-cols-1 justify-between gap-4 sm:grid-cols-3 sm:gap-12">
             <Card
               title="Buy a home"
               description="Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else."
@@ -106,7 +124,7 @@ export default function Home({}: Props) {
       </section>
 
       {/* find agent */}
-      <section className="py-8 sm:pt-16 sm:pb-8">
+      <section className="py-8 sm:pb-8 sm:pt-16">
         <div
           className={`${container} flex-col items-center justify-start sm:flex-row`}
         >
@@ -134,28 +152,37 @@ export default function Home({}: Props) {
       <section className="py-8 sm:pt-8">
         <div className={`${container} flex-col`}>
           <h2 className="mb-4 text-3xl font-bold text-gray-900">
-            Useful Links
+            {"Useful Links"}
           </h2>
           <article className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Card
-              title="Buy a home"
-              description="Find your place with an immersive photo experience and the most listings, including things you won’t find anywhere else."
-              button="Browse homes"
-              imgSrc={BuyHome}
+              link="https://capitalbankmd.com/homeloans/resources/home-loans-101-blog/first-time-homebuyer/first-time-home-buyer-tips-solving-for-the-two-top-challenges"
+              title="First Time Home Buyer Tips"
+              description="Here are 21 tips to help you get ready to buy a home."
+              button="Read More"
+              imgSrc={
+                "https://images.pexels.com/photos/4259140/pexels-photo-4259140.jpeg?cs=srgb&dl=pexels-august-de-richelieu-4259140.jpg&fm=jpg&w=640&h=427&"
+              }
               imgAlt=""
             />
             <Card
-              title="Sell a home"
-              description="No matter what path you take to sell your home, we can help you navigate a successful sale."
-              button="See your options"
-              imgSrc={RentHome}
+              link="https://www.realtor.com/advice/finance/everyones-talking-about-home-equity-heres-what-yours-means-in-todays-market/"
+              title="Home Equity"
+              description="Home ownership has long been tied to building wealth—and for good reason. Instead of throwing rent money out the window each month, owning a home allows you to build home equity."
+              button="Read More"
+              imgSrc={
+                "https://images.pexels.com/photos/5899215/pexels-photo-5899215.jpeg?cs=srgb&dl=pexels-karolina-grabowska-5899215.jpg&fm=jpg&w=640&h=427"
+              }
               imgAlt=""
             />
             <Card
-              title="Rent a home"
-              description="We’re creating a seamless online experience – from shopping on the largest rental network, to applying, to paying rent."
-              button="Find rentals"
-              imgSrc={SellHome}
+              link="https://www.architecturaldigest.com/home-renovation-guide"
+              title="Home Remodeling & Renovation Ideas"
+              description="Whether you're revamping a space to make it more functional or simply more beautiful, this handy guide is your one-stop shop for all things home renovation."
+              button="Read More"
+              imgSrc={
+                "https://images.pexels.com/photos/8293699/pexels-photo-8293699.jpeg?cs=srgb&dl=pexels-rdne-stock-project-8293699.jpg&fm=jpg&w=640&h=427"
+              }
               imgAlt=""
             />
           </article>
