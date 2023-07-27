@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { primaryBtn, secondaryBtn } from "@/styles/common";
 import { Link } from "react-router-dom";
 import UserInfoContext from "@/contexts/userInfo.context";
@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { useSignOut } from "@/hooks/useSignOut";
 type Props = {};
 
-const MenuItemsLinks = (props: Props) => {
+const MenuItemsLinks = ({ isMobile = false }: { isMobile?: boolean }) => {
   type menuItem = {
     name: string;
     link: string;
@@ -14,20 +14,20 @@ const MenuItemsLinks = (props: Props) => {
   const menuItems: Array<menuItem> = [
     {
       name: "Buy",
-      link: "/search",
+      link: "/search?type=sale",
     },
-    {
-      name: "Sell",
-      link: "/search",
-    },
+    // {
+    //   name: "Sell",
+    //   link: "/search",
+    // },
     {
       name: "Rent",
-      link: "/search",
+      link: "/search?type=rent",
     },
-    {
-      name: "Contact us",
-      link: "/search",
-    },
+    // {
+    //   name: "Contact us",
+    //   link: "/search",
+    // },
   ];
   const navLink = "text-sm text-gray-400 hover:text-black";
 
@@ -39,7 +39,7 @@ const MenuItemsLinks = (props: Props) => {
             {menuItem.name}
           </Link>
         </li>
-        {index !== menuItems.length - 1 && (
+        {!isMobile && index !== menuItems.length - 1 && (
           <li key={`menuItem-${index}`} className="text-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -60,15 +60,12 @@ const MenuItemsLinks = (props: Props) => {
       </Fragment>
     );
   });
-  return (
-    <ul className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 transform lg:mx-auto lg:flex lg:w-auto lg:items-center lg:space-x-6">
-      {links}
-    </ul>
-  );
+  return <Fragment>{links}</Fragment>;
 };
 
 const Navbar = (props: Props) => {
   const { userInfo, setUserInfo } = useContext(UserInfoContext);
+  const [isMobileExpanded, setIsMobileExpanded] = useState<boolean>(false);
 
   const { isLoading, mutate } = useSignOut((data) => {
     setUserInfo(null);
@@ -101,44 +98,94 @@ const Navbar = (props: Props) => {
               ></path>
             </svg>
           </Link>
-          <div className="lg:hidden">
-            <button className="navbar-burger flex items-center p-3 text-blue-600">
-              <svg
-                className="block h-4 w-4 fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Mobile menu</title>
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-              </svg>
-            </button>
-          </div>
-          <MenuItemsLinks />
-          {userInfo && userInfo?.email ? (
-            <button
-              className={`${primaryBtn} hidden font-semibold lg:inline-flex`}
-              onClick={() => mutate()}
+          <button
+            data-collapse-toggle="mega-menu-full"
+            type="button"
+            className="ml-1 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 sm:hidden"
+            aria-controls="mega-menu-full"
+            aria-expanded={isMobileExpanded}
+            onClick={() =>
+              setIsMobileExpanded((oldState: boolean) => !oldState)
+            }
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="h-6 w-6"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Sign out
-            </button>
-          ) : (
-            <Fragment>
-              <Link
-                className={`${secondaryBtn} hidden text-sm font-semibold lg:ml-auto lg:mr-3 lg:inline-block`}
-                to={"/signin"}
+              <path
+                fill-rule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          <div className="hidden sm:block">
+            <ul className="absolute left-1/2 top-1/2  mx-auto flex w-auto -translate-x-1/2 -translate-y-1/2 transform items-center space-x-6">
+              <MenuItemsLinks />
+            </ul>
+            {userInfo && userInfo?.email ? (
+              <button
+                className={`${primaryBtn}  inline-flex font-semibold`}
+                onClick={() => mutate()}
               >
-                Sign In
-              </Link>
-              <Link
-                className={`${primaryBtn} hidden font-semibold lg:inline-flex`}
-                to={"/signup"}
-              >
-                Sign up
-              </Link>
-            </Fragment>
-          )}
+                Sign out
+              </button>
+            ) : (
+              <Fragment>
+                <Link
+                  className={`${secondaryBtn}  inline-block text-sm font-semibold sm:ml-auto sm:mr-3`}
+                  to={"/signin"}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  className={`${primaryBtn}  inline-flex font-semibold`}
+                  to={"/signup"}
+                >
+                  Sign up
+                </Link>
+              </Fragment>
+            )}
+          </div>
         </div>
       </nav>
+
+      {isMobileExpanded && (
+        <div className="mx-2  my-2 rounded-xl ring-2 ring-gray-200 sm:hidden">
+          <ul className=" mx-auto my-4 flex w-auto flex-col space-y-4 px-4 py-3">
+            <MenuItemsLinks isMobile={true} />
+            <div>
+              {userInfo && userInfo?.email ? (
+                <button
+                  className={`${primaryBtn}  inline-flex w-full justify-center font-semibold`}
+                  onClick={() => mutate()}
+                >
+                  Sign out
+                </button>
+              ) : (
+                <Fragment>
+                  <Link
+                    className={`${secondaryBtn}  flex w-full justify-center text-sm font-semibold mb-4`}
+                    to={"/signin"}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    className={`${primaryBtn} flex w-full justify-center font-semibold`}
+                    to={"/signup"}
+                  >
+                    Sign up
+                  </Link>
+                </Fragment>
+              )}
+            </div>
+          </ul>
+        </div>
+      )}
     </>
   );
 };
